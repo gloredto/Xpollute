@@ -47,20 +47,20 @@ uint8_t construct_xpollute_mq7(xpollute_message_t *output_message,
 
 
 /* Extractor */
-humidityType extract_altitude(uint8_t *payload_data) {
-    return(*((altType*) payload_data));
+humidityType extract_humidity(uint8_t *payload_data) {
+    return(*((humidityType*) payload_data));
 }
 
-tempType extract_latitude(uint8_t *payload_data) {
-    return(*((latType*) payload_data));
+tempType extract_temperature(uint8_t *payload_data) {
+    return(*((tempType*) payload_data));
 }
 
-mq2Type extract_longitude(uint8_t *payload_data) {
-    return(*((lonType*) payload_data));
+mq2Type extract_mq2(uint8_t *payload_data) {
+    return(*((mq2Type*) payload_data));
 }
 
-mq7Type extract_pressure(uint8_t *payload_data) {
-    return(*((preType*) payload_data));
+mq7Type extract_mq7(uint8_t *payload_data) {
+    return(*((mq7Type*) payload_data));
 }
 
 
@@ -101,7 +101,7 @@ void construct_xpollute_header(xpollute_header_t *header,
 }
 
 /*
-  Convert the message to rocketlink_payload depends on the message id
+  Convert the message to xpollute_payload depends on the message id
 */
 
 void construct_xpollute_payload(uint8_t** output_message,
@@ -142,7 +142,7 @@ void deconstruct_message(uint8_t **output_message,
 //fungsi parse
 
 /* Reconstructing Message */
-// Assumption: input is already a valid rocketlink message (Checked on other function)
+// Assumption: input is already a valid xpollute message (Checked on other function)
 // payload haven't malloc'ed
 uint8_t reconstruct_xpollute(xpollute_message_t *output_message,
                         uint8_t *input_message)
@@ -162,7 +162,7 @@ uint8_t reconstruct_xpollute(xpollute_message_t *output_message,
     return 0;
 }
 
-void print_xpollute(rocketlink_message_t *message) 
+void print_xpollute(xpollute_message_t *message) 
 {
     printf("Start bit: %.2x \n", message->header.startBit);
     printf("Team ID: 0x%.2x%.2x \n", message->header.id[0], message->header.id[1]);
@@ -198,7 +198,7 @@ uint8_t return_byte_size(uint8_t message_id)
 }
 
 
-/* Get the input character and construct rocket link return 0 if done, return 1 otherwise */
+/* Get the input character and construct xpollute return 0 if done, return 1 otherwise */
 uint8_t parseXpollute(xpollute_message_t *output_message,
                         uint8_t incoming_byte, 
                         uint8_t unique_word,
