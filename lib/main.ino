@@ -9,12 +9,10 @@ extern "C"{
     #include "src/Xpollute.h"
 }
 
-void manual_assignment_test();
 void test_humidity();
 void test_temperature();
 void test_mq2();
 void test_mq7();
-void test_parsing();
 
 int main(){
   test_humidity();
@@ -25,6 +23,7 @@ int main(){
   test_parsing;
   return 0;
 }
+
 
 void test_humidity()
 {
