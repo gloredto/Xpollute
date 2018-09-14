@@ -16,10 +16,10 @@
 #define MIN_MSG_ID 0
 #define MAX_MSG_ID 3
 // Message ID
-#define ROCKETLINK_MSG_ID_HUMIDITY 0
-#define ROCKETLINK_MSG_ID_TEMP 1
-#define ROCKETLINK_MSG_ID_MQ2 2
-#define ROCKETLINK_MSG_ID_MQ7 3
+#define XPOLLUTE_MSG_ID_HUMIDITY 0
+#define XPOLLUTE_MSG_ID_TEMP 1
+#define XPOLLUTE_MSG_ID_MQ2 2
+#define XPOLLUTE_MSG_ID_MQ7 3
 
 /* Type definition [ID] */
 typedef int32_t humidityType;   //[0] hold humidityType
@@ -74,7 +74,7 @@ mq7Type extract_mq7(uint8_t *payload_data);
 
 
 /* Helper Function */
-// Helper function for the Construct Rocketlink Message
+// Helper function for the Construct Xpollute Message
 void construct_xpollute_message(xpollute_message_t *output_message,
                                  uint8_t unique_word, 
                                  uint8_t *team_identifier, 
@@ -85,7 +85,7 @@ void construct_xpollute_header(xpollute_header_t *header,
                                  uint8_t unique_word, 
                                  uint8_t *team_identifier, 
                                  uint8_t msg_id);
-void construct_rocketlink_payload(uint8_t **output_message,
+void construct_xpollute_payload(uint8_t **output_message,
                                   uint8_t *input_message,
                                   uint8_t msg_id);
 
@@ -93,7 +93,7 @@ void construct_rocketlink_payload(uint8_t **output_message,
 uint8_t return_byte_size(uint8_t message_id);
 
 
-// Breakdown rocketlink message into character array
+// Breakdown xpollute message into character array
 void deconstruct_message(uint8_t **output_message,
                        xpollute_message_t *input_message);
 
