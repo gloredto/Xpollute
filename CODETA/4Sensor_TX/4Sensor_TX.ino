@@ -17,7 +17,15 @@ extern "C"{
   uint8_t startBit = 0x0D;
   uint8_t id[] = { 0x0C, 0xF2 };
   xpollute_message_t testMessageHumidity;
+  xpollute_message_t testMessageTemperature;
+  xpollute_message_t testMessageMq2;
+  xpollute_message_t testMessageMq7;
+
   uint8_t *containerMsgHumidity;
+  uint8_t *containerMsgTemperature;
+  uint8_t *containerMsgMq2;
+  uint8_t *containerMsgMq7;
+
   uint8_t testArray[8]; // Input simulation
 
   
@@ -75,17 +83,30 @@ void setup()
 
 void loop()
 {
-   humidityType testPayloadHumidity = MQGetGasPercentage(MQRead(MQ7_PIN)/Ro_CO,GAS_CO) ;
-   
-   Serial.print("Metana:"); 
+   humidityType testPayloadHumidity = 1//MQGetGasPercentage(MQRead(MQ7_PIN)/Ro_CO,GAS_CO);
+   tempType testPayloadTemperature = 2//MQGetGasPercentage(MQRead(MQ2_PIN)/Ro_CH4,GAS_CH4);
+   mq2Type testPayloadMq2 = 3//MQGetGasPercentage(MQRead(MQ2_PIN)/Ro_CH4,GAS_CH4);
+   mq7Type testPayloadMq7 = 4//MQGetGasPercentage(MQRead(MQ7_PIN)/Ro_CO,GAS_CO);
+    
+   Serial.print("Humidity:"); 
    Serial.print(testPayloadHumidity);
+   Serial.print( "%" );
+   Serial.print("    ");
+   Serial.print("Temperature:"); 
+   Serial.print(testPayloadTemperature);
+   Serial.print( "C" );
+   Serial.print("    "); 
+   Serial.print("Metana:"); 
+   Serial.print(testPayloadMq2);
    Serial.print( "ppm" );
-   Serial.print("    ");   
-   Serial.print("CO:"); 
-   Serial.print(MQGetGasPercentage(MQRead(MQ7_PIN)/Ro_CO,GAS_CO) );
+   Serial.print("    "); 
+   Serial.print("CarbonMonoxide:"); 
+   Serial.print(testPayloadMq7);
    Serial.print( "ppm" );
    Serial.println("    ");   
-
+    
+   
+   //Mengirimkan Paket Humidity
    construct_xpollute_humidity(&testMessageHumidity, startBit, id, testPayloadHumidity);
    deconstruct_message(&containerMsgHumidity, &testMessageHumidity);
    free(testMessageHumidity.payload);
@@ -94,6 +115,42 @@ void loop()
 
    for (int i = 0; i<8; i++) {
       testArray[i] = containerMsgHumidity[i];
+      Serial.write(testArray[i]);
+      XBee.write(testArray[i]);
+       
+   //Mengirimkan Paket Temperature
+   construct_xpollute_temperature(&testMessageTemperature, startBit, id, testPayloadTemperature);
+   deconstruct_message(&containerMsgTemperature, &testMessageTemperature);
+   free(testMessageTemperature.payload);
+
+   Serial.println("Mengirimkan Array");
+
+   for (int i = 0; i<8; i++) {
+      testArray[i] = containerMsgTemperature[i];
+      Serial.write(testArray[i]);
+      XBee.write(testArray[i]);
+       
+   //Mengirimkan Paket MQ2
+   construct_xpollute_mq2(&testMessageMq2, startBit, id, testPayloadMq2);
+   deconstruct_message(&containerMsgMq2, &testMessageMq2);
+   free(testMessageMq2.payload);
+
+   Serial.println("Mengirimkan Array");
+
+   for (int i = 0; i<8; i++) {
+      testArray[i] = containerMsgMq2[i];
+      Serial.write(testArray[i]);
+      XBee.write(testArray[i]);
+       
+   //Mengirimkan Paket MQ7
+   construct_xpollute_mq7(&testMessageMq7, startBit, id, testPayloadMq7);
+   deconstruct_message(&containerMsgMq7, &testMessageMq7);
+   free(testMessageMq7.payload);
+
+   Serial.println("Mengirimkan Array");
+
+   for (int i = 0; i<8; i++) {
+      testArray[i] = containerMsgMq7[i];
       Serial.write(testArray[i]);
       XBee.write(testArray[i]);
       
